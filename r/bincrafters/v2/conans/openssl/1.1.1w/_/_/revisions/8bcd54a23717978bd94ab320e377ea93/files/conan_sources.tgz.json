@@ -1,5 +1,5 @@
 {
     "files": [
-        "1.1.1-tvos-watchos.patch"
+        "conan_sources/1.1.1-tvos-watchos.patch"
     ]
 }

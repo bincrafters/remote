@@ -1,5 +1,5 @@
 {
     "files": [
-        "conandata.yml"
+        "conan_export/conandata.yml"
     ]
 }
