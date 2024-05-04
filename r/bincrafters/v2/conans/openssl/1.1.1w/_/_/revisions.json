@@ -1,0 +1,25 @@
+{
+    "reference": "openssl/1.1.1w@_/_",
+    "revisions": [
+        {
+            "revision": "8bcd54a23717978bd94ab320e377ea93",
+            "time": "2023-11-08T14:55:23.899+0000"
+        },
+        {
+            "revision": "ed8eb428db825b7ac4ac2b467bf5b001",
+            "time": "2023-10-31T20:58:28.050+0000"
+        },
+        {
+            "revision": "2d78cf15871a2cd0bc206c3d560cf741",
+            "time": "2023-10-29T10:53:31.365+0000"
+        },
+        {
+            "revision": "48acccc156e0cd9d775a2ebb4f0aa0ba",
+            "time": "2023-09-25T15:25:01.260+0000"
+        },
+        {
+            "revision": "42c32b02f62aa987a58201f4c4561d3e",
+            "time": "2023-09-12T19:21:21.987+0000"
+        }
+    ]
+}
