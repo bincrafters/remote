@@ -1,0 +1,228 @@
+from conans import ConanFile, tools
+from conans.tools import download, unzip, replace_in_file
+import shutil, os
+from conans import CMake, AutoToolsBuildEnvironment
+
+class SDLConan(ConanFile):
+    name = "SDL2"
+    version = "2.0.5"
+    folder = "SDL2-%s" % version
+    settings = "os", "arch", "compiler", "build_type"
+    options = {"directx": [True, False], "shared": [True, False], "fPIC": [True, False]}
+    default_options = '''directx=False
+    shared=False
+    fPIC=True'''
+    exports = "CMakeLists.txt"
+    generators = "cmake"
+    url = "https://github.com/lasote/conan-sdl2"
+    requires = "zlib/1.2.11@conan/stable"
+    license = "zlib license: https://www.libsdl.org/license.php"
+    build_policy = "missing"
+
+    def system_requirements(self):
+        if not self.has_gl_installed():
+            if self.settings.os == "Linux":
+                self.output.warn("GL is not installed in this machine! Conan will try to install it.")
+                self.run("sudo apt-get update && sudo apt-get install -y freeglut3 freeglut3-dev libglew1.5-dev libglm-dev")
+                if not self.has_gl_installed():
+                    self.output.error("GL Installation doesn't work... install it manually and try again")
+                    exit(1)
+
+    def config_options(self):
+        if self.settings.os != "Windows":
+            self.options.directx = False
+        del self.settings.compiler.libcxx
+
+    def source(self):
+        zip_name = "%s.tar.gz" % self.folder
+        download("https://www.libsdl.org/release/%s" % zip_name, zip_name)
+        unzip(zip_name)
+        shutil.move("%s/CMakeLists.txt" % self.folder, "%s/CMakeListsOriginal.cmake" % self.folder)
+        shutil.move("CMakeLists.txt", "%s/CMakeLists.txt" % self.folder)
+
+    def build(self):
+        """ Define your project building. You decide the way of building it
+            to reuse it later in any other project.
+        """
+
+        if self.settings.os == "Windows":
+            self.build_with_cmake()
+        else:
+            self.build_with_make()
+
+    def build_with_make(self):
+        self.run("cd %s" % self.folder)
+        self.run("chmod a+x %s/configure" % self.folder)
+        if self.settings.os == "Macos": # Fix rpath, we want empty rpaths, just pointing to lib file
+            old_str = "-install_name \$rpath/"
+            new_str = "-install_name "
+            replace_in_file("%s/configure" % self.folder, old_str, new_str)
+            self.run("chmod a+x %s/build-scripts/gcc-fat.sh" % self.folder)
+
+        env = AutoToolsBuildEnvironment(self)
+        if self.options.fPIC:
+            env.fpic = True
+        vars = env.vars
+        if self.settings.os == "Macos":
+            vars["CC"] = "{}/build-scripts/gcc-fat.sh".format(self.folder)
+        with tools.environment_append(vars):
+            self.run('cd %s && ./configure --enable-mir-shared=no' % (self.folder))
+            self.run("cd %s && make" % (self.folder))
+
+    def build_with_cmake(self):
+        cmake = CMake(self)
+        # Build
+        directx_def = "-DDIRECTX=ON" if self.options.directx else "-DDIRECTX=OFF"
+        static_run = "-DSDL_SHARED_ENABLED_BY_DEFAULT=%s" % ("ON" if self.options.shared else "OFF")
+        static_run += " -DSDL_STATIC=%s" % ("OFF" if self.options.shared else "ON")
+        self.run("cd %s &&  mkdir _build" % self.folder)
+        configure_command = 'cd %s/_build && cmake .. %s %s %s -DLIBC=ON' % (self.folder, cmake.command_line, directx_def, static_run)
+        self.output.warn("Configure with: %s" % configure_command)
+        self.run(configure_command)
+        self.run("cd %s/_build && cmake --build . %s" % (self.folder, cmake.build_config))
+
+    def package(self):
+        """ Define your conan structure: headers, libs and data. After building your
+            project, this method is called to create a defined structure:
+        """
+
+        self.copy(pattern="*.h", dst="include/SDL2", src="%s/_build/include" % self.folder, keep_path=False)
+        self.copy(pattern="*.h", dst="include/SDL2", src="%s/include" % self.folder, keep_path=False)
+
+        # Win
+        if self.options.shared:
+            self.copy(pattern="*.dll", dst="bin", src="%s/_build/" % self.folder, keep_path=False)
+        self.copy(pattern="*.lib", dst="lib", src="%s/_build/" % self.folder, keep_path=False)
+
+        # UNIX
+        if self.settings.os != "Windows":
+            self.copy(pattern="sdl2-config", dst="lib", src="%s/" % self.folder, keep_path=False)
+            if not self.options.shared:
+                self.copy(pattern="*.a", dst="lib", src="%s/build/" % self.folder, keep_path=False)
+                self.copy(pattern="*.a", dst="lib", src="%s/build/.libs/" % self.folder, keep_path=False)
+            else:
+                self.copy(pattern="*.so*", dst="lib", src="%s/build/.libs/" % self.folder, keep_path=False)
+                self.copy(pattern="*.dylib*", dst="lib", src="%s/build/.libs/" % self.folder, keep_path=False)
+
+    def package_info(self):
+
+        self.cpp_info.includedirs += ["include/SDL2"]
+        self.cpp_info.libs = ["SDL2"]
+        self.env_info.SDL2_CONFIG = os.path.join(self.package_folder, "lib")
+
+        if self.settings.os == "Windows":
+            self.cpp_info.libs.append("OpenGL32")
+            self.cpp_info.libs.append("SDL2main")
+            if self.settings.compiler == "Visual Studio":
+                # CFLAGS
+                self.cpp_info.cflags = ["/DWIN32", "/D_WINDOWS", "/W3"]
+                # EXTRA LIBS
+                self.cpp_info.libs.extend(["user32", "gdi32", "winmm", "imm32", "ole32",
+                                                   "oleaut32", "version", "uuid"])
+        elif self.settings.os == "Macos":
+            if not self.options.shared:
+                self.cpp_info.libs.append("SDL2main")
+                self.cpp_info.libs.append("iconv")
+
+
+                self.cpp_info.exelinkflags.append("-framework Carbon")
+                self.cpp_info.exelinkflags.append("-framework CoreAudio")
+                self.cpp_info.exelinkflags.append("-framework Cocoa")
+                self.cpp_info.exelinkflags.append("-framework Security")
+                self.cpp_info.exelinkflags.append("-framework IOKit")
+                self.cpp_info.exelinkflags.append("-framework CoreVideo")
+                self.cpp_info.exelinkflags.append("-framework AudioToolbox")
+                self.cpp_info.exelinkflags.append("-framework ForceFeedback")
+                self.cpp_info.exelinkflags.append("-framework AudioUnit")
+
+
+                self.cpp_info.sharedlinkflags = self.cpp_info.exelinkflags
+
+        elif self.settings.os == "Linux":
+            self.cpp_info.libs.append("GL")
+            if not self.options.shared:
+                self.cpp_info.libs.append("SDL2main")
+            # DEFINIITONS
+            self.cpp_info.defines.extend(["HAVE_LINUX_VERSION_H", "_REENTRANT"])
+            # # EXTRA_CFLAGS
+            # self.cpp_info.cflags.extend(["-mfpmath=387", "-msse2",
+            #                              "-msse", "-m3dnow", "-mmmx",
+            #                              "-fvisibility=hidden"])
+            # # EXTRA LIBS
+            self.cpp_info.libs.extend(["m", "dl", "rt"])
+            # EXTRA_LDFLAGS
+            self.cpp_info.libs.append("pthread")
+
+    def has_gl_installed(self):
+        if self.settings.os == "Linux":
+            return self.has_gl_installed_linux()
+        return True
+
+    def has_gl_installed_linux(self):
+        test_program = '''#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#include <stdlib.h>
+
+void quad()
+{
+glBegin(GL_QUADS);
+glVertex2f( 0.0f, 1.0f); // Top Left
+glVertex2f( 1.0f, 1.0f); // Top Right
+glVertex2f( 1.0f, 0.0f); // Bottom Right
+glVertex2f( 0.0f, 0.0f); // Bottom Left
+glEnd();
+}
+
+void draw()
+{
+// Make background colour black
+glClearColor( 0, 0, 0, 0 );
+glClear ( GL_COLOR_BUFFER_BIT );
+
+// Push the matrix stack - more on this later
+glPushMatrix();
+
+// Set drawing colour to blue
+glColor3f( 0, 0, 1 );
+
+// Move the shape to middle of the window
+// More on this later
+glTranslatef(-0.5, -0.5, 0.0);
+
+// Call our Quad Method
+quad();
+
+// Pop the Matrix
+glPopMatrix();
+
+// display it
+glutSwapBuffers();
+}
+
+// Keyboard method to allow ESC key to quit
+void keyboard(unsigned char key,int x,int y)
+{
+if(key==27) exit(0);
+}
+
+int main(int argc, char **argv)
+{
+// Double Buffered RGB display
+glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE);
+// Set window size
+glutInitWindowSize( 500,500 );
+
+glutDisplayFunc(draw);
+glutKeyboardFunc(keyboard);
+// Start the Main Loop
+glutMainLoop();
+}
+'''
+        try:
+            self.run('echo "%s" > /tmp/quad.c' % test_program)
+            self.run("cc /tmp/quad.c  -lglut -lGLU -lGL -lm")
+            self.output.info("GL DETECTED OK!")
+            return True
+        except:
+            return False

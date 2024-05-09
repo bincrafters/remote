@@ -1,0 +1,7 @@
+{
+  "reference" : "OpenSSL/1.0.2m@lasote/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:51:12.080+0000"
+  } ]
+}

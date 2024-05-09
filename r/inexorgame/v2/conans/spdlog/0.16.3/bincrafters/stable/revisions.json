@@ -1,0 +1,7 @@
+{
+  "reference" : "spdlog/0.16.3@bincrafters/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:49:54.765+0000"
+  } ]
+}

@@ -1,0 +1,6 @@
+1552221133
+LICENSE.md: 6a7ced67fb4218d48b0a61f6a616a8b8
+conanfile.py: 78b83e961c0380a6566886e4889b773b
+export_source/CMakeLists.txt: d3511882598669f93c068dd0f8bf241c
+export_source/fix-missing-include-file.patch: 09ec2ab0fd984f2f0cc0eb36932ffa3e
+export_source/protobuf.patch: 0bd6ac902f7751fa42ea4d26ef2f2ad7

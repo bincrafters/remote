@@ -1,0 +1,5 @@
+1545933717
+LICENSE.md: 6a7ced67fb4218d48b0a61f6a616a8b8
+conanfile.py: 04662e224d02b165cfd4252300e9526b
+export_source/CMakeLists.txt: 22686a5c7f18b43cd43857f8d623e6f1
+export_source/protobuf.patch: 98011bf8c08a67972de10182c949caba

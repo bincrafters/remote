@@ -1,0 +1,5 @@
+1559844178
+LICENSE.md: 177c3ca98365071dcc75ff0af80a4f6c
+conanfile.py: 96a6ed63bd169f86c2d60c01d7b1ef15
+export_source/CMakeLists.txt: 38d68f41f137f0160c713ead653c37cd
+export_source/cmake.patch: 03ba2b1f306f6f9f1138f58a8754e573

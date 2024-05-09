@@ -1,0 +1,7 @@
+{
+  "reference" : "c-ares/1.15.0@conan/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:48:05.650+0000"
+  } ]
+}

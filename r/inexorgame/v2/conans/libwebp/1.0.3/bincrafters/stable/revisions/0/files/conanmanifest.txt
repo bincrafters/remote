@@ -1,0 +1,6 @@
+1563738050
+LICENSE.md: 5aa9930034582b90e2008d2c609d1317
+conanfile.py: 91373d54ce736466a157efec7926ffd8
+export_source/0001-fix-dll-export.patch: 0734b9db30418ad5d620cea94625cc22
+export_source/0002-enable-webpmux.patch: 3e3ce41d6986717e7d99ad57222bb915
+export_source/CMakeLists.txt: 2729a57619e0bd4a45f6ead11c8f2a54

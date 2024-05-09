@@ -1,0 +1,5 @@
+1567517448
+LICENSE.md: 177c3ca98365071dcc75ff0af80a4f6c
+conanfile.py: 16f277d0ea0cc8342de5f85ee8fe1ec3
+export_source/CMakeLists.txt: c94b7c049bffed32ef62c98603701ccf
+export_source/patches/CMakeLists-zlib.patch: 2f4cd25a2c6da6932859589d62c660b9

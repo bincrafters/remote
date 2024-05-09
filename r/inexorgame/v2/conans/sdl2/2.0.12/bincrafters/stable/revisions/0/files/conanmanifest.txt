@@ -1,0 +1,5 @@
+1609525983
+conandata.yml: 3aeb2cd20bb5238eacc7c1578b6464ef
+conanfile.py: 2a728ee5d6284ff8291cd659fdbc9b8e
+export_source/CMakeLists.txt: fbe3218e86111e24cee1d0cfd7ce60dd
+export_source/patches/0002-sdl_string.patch: b2c7225af24074c3f34ba7ba298f91a6

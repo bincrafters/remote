@@ -1,0 +1,7 @@
+{
+  "reference" : "libiconv/1.15@bincrafters/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:48:57.361+0000"
+  } ]
+}
