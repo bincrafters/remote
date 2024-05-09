@@ -1,0 +1,1 @@
+{"files": ["conan_sources/CMakeLists.txt", "conan_sources/patches/SDL_string.patch", "conan_sources/patches/cmake.patch"]}

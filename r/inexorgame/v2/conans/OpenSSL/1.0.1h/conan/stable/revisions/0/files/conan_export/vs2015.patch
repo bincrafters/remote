@@ -1,0 +1,12 @@
+diff -ru a/e_os.h b/e_os.h
+--- a/e_os.h	2014-06-05 11:44:33.000000000 +0200
++++ b/e_os.h	2019-01-24 13:39:25.151074297 +0100
+@@ -307,7 +307,7 @@
+ #      undef isxdigit
+ #    endif
+ #    if defined(_MSC_VER) && !defined(_DLL) && defined(stdin)
+-#      if _MSC_VER>=1300
++#      if _MSC_VER>=1300 && _MSC_VER <= 1800
+ #        undef stdin
+ #        undef stdout
+ #        undef stderr

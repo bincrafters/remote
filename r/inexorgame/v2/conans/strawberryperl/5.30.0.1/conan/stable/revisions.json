@@ -1,0 +1,7 @@
+{
+  "reference" : "strawberryperl/5.30.0.1@conan/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:50:01.550+0000"
+  } ]
+}

@@ -1,0 +1,5 @@
+1571388227
+LICENSE: ae50019709b381862dd2f0f866fa47d3
+conanfile.py: 950995362b82706a9f3d579287c247d4
+export_source/include/.vscode/settings.json: 19c1e56a7453c8a6844a3591fded69a0
+export_source/include/magic_enum.hpp: eb49ebadbb091087d7ee96d2b9deea24

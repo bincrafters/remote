@@ -1,0 +1,7 @@
+{
+  "reference" : "nasm/2.13.01@conan/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:49:16.546+0000"
+  } ]
+}

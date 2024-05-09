@@ -1,0 +1,7 @@
+{
+  "reference" : "OpenSSL/1.0.2p@conan/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:51:14.529+0000"
+  } ]
+}

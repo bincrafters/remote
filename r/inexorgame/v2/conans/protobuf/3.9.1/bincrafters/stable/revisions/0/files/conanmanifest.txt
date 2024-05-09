@@ -1,0 +1,6 @@
+1574962706
+LICENSE.md: 867efafe2f99b907dad732b1e2bdb351
+conanfile.py: af71077c2202c51604baddeff76d5961
+conanfile_base.py: ef368adc2997a562d879590d77788fcf
+export_source/CMakeLists.txt: ac5d9b4bdc3adbba7716c1aaed112b17
+protobuf.patch: 2b27e12a9ce9b872edd28ed74d70f2e8

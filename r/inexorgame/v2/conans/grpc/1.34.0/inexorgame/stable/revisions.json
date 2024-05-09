@@ -1,0 +1,7 @@
+{
+  "reference" : "grpc/1.34.0@inexorgame/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T18:10:04.254+0000"
+  } ]
+}

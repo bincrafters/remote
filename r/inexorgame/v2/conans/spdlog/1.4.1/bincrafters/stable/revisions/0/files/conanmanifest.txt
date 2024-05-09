@@ -1,0 +1,5 @@
+1571518528
+LICENSE.md: 5aa9930034582b90e2008d2c609d1317
+conanfile.py: 6e1a8983f1869009b9e19d433be23ad6
+export_source/CMakeLists.txt: a7bd6a1bcf8760ac9332cfd6aba4142a
+export_source/patches/0001-header-only.patch: 6cf6a0f841468fe605df516ee93a5243

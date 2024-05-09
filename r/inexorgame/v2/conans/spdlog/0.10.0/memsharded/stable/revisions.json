@@ -1,0 +1,7 @@
+{
+  "reference" : "spdlog/0.10.0@memsharded/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:49:53.458+0000"
+  } ]
+}

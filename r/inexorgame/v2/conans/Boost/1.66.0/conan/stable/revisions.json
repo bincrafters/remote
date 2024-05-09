@@ -1,0 +1,7 @@
+{
+  "reference" : "Boost/1.66.0@conan/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:50:15.334+0000"
+  } ]
+}

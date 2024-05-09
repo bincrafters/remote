@@ -1,0 +1,7 @@
+{
+  "reference" : "protobuf/3.6.1@bincrafters/stable",
+  "revisions" : [ {
+    "revision" : "0",
+    "time" : "2021-04-28T17:49:25.783+0000"
+  } ]
+}

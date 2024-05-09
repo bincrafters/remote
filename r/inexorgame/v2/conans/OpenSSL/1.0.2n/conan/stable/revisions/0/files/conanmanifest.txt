@@ -1,0 +1,3 @@
+1557765198
+conanfile.py: 516354673608b6134013395ef54d9a1f
+export_source/android.patch: aa2cfb2bcad6b66d7e013311ba009aca

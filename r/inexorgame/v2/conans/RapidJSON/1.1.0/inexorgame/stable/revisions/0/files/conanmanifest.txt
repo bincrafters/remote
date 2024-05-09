@@ -1,0 +1,3 @@
+1512881598
+FindRapidJSON.cmake: 47ca663bad04f857b394eb7a01fbbbf2
+conanfile.py: 9874603617bd86cf3e53ae728769b863
